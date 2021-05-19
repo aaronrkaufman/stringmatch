@@ -1,0 +1,17 @@
+Package: stringmatch
+Type: Package
+Title: Implements the Adaptive Fuzzy String Matching model from Kaufman & Klevs
+Version: 1.0
+Date: 2021-05-19
+Authors@R: c(
+    person("Aaron R.", "Kaufman", email = "aaronkaufman@nyu.edu", role = c("aut", "cre")),
+    person("Aja", "Klevs", email = "ak7288@nyu.edu", role = c("aut")))
+Maintainer: Aaron Kaufman <ak8096@nyu.edu>
+Description: Uses a pretrained model to predict whether an arbitrary pair of strings refers to the same entity.
+Depends:
+    R (>= 3.5.0)
+Imports:
+    stringdist,
+    randomForest
+License: GPL (>= 2)
+RoxygenNote: 7.1.1

@@ -12,39 +12,41 @@
 
 
 stringmatch <-
-function(string1, string2,
-                       trainingset = NULL,
-                       feature.importances = FALSE){
-  if(!is.null(trainingset)){
-    ## set some warnings for type: make sure the columns are A,B,y
-    if(!c("A", "B", "y") %in% colnames(trainingset)){
-      stop("The columns of trainingset must include 'A', 'B', and 'y'")
+  function(string1, string2,
+           trainingset = NULL,
+           feature.importances = FALSE){
+    if(!is.null(trainingset)){
+      ## set some warnings for type: make sure the columns are A,B,y
+      if(!c("A", "B", "y") %in% colnames(trainingset)){
+        stop("The columns of trainingset must include 'A', 'B', and 'y'")
+      }
+      
+      ## Calculate stringdist for new training set
+      newtrain = get_features(trainingset$A, trainingset$B)
+      ## Append the new trainingset to the old one and generate the model
+      train = rbind(train, newtrain)
+      m = ranger::ranger(x = train %>% select(-y),
+                       y = factor(train$y),
+                       interaction.depth=2,
+                        importance = "impurity")
+      
+    } 
+    
+    ## Calculate stringdist for string1, string2
+    feats = get_features(string1, string2)
+    
+    ## Run the prediction
+    preds = predict(m, data = feats)
+    
+    ## Return feature importances too
+    if(feature.importances){
+      out = list(preds$predictions, ranger::importance(m))
+    } else {
+      out = list(preds$predictions)
     }
     
-    ## Calculate stringdist for new training set
-    newtrain = get_features(trainingset$A, trainingset$B)
-    ## Append the new trainingset to the old one and generate the model
-    train = rbind(train, newtrain)
-    m = randomForest(x = train %>% select(-y),
-                     y = factor(train$y),
-                     interaction.depth=2)
-
-  } 
-  
-  ## Calculate stringdist for string1, string2
-  feats = get_features(string1, string2)
-  
-  ## Run the prediction
-  preds = predict(m, newdata = feats)
-  
-  ## Return feature importances too
-  if(feature.importances){
-    out = list(preds, importance(m))
-  } else {
-    out = list(preds)
+    ## Return a data set of predictions
+    return(out)
+    
   }
-  
-  ## Return a data set of predictions
-  return(out)
-  
-}
+

@@ -9,14 +9,14 @@
 
 
 get_features <-
-function(string1, string2){
-  tmp = expand_grid(string1, string2)
-  tmp$osa = stringdist::stringdist(string1, string2, method = "osa")
-  tmp$cosine = stringdist::stringdist(string1, string2, method = "cosine")
-  tmp$jaccard = stringdist::stringdist(string1, string2, method = "jaccard")
-  tmp$jw = stringdist::stringdist(string1, string2, method = "jw")
-  tmp$lcs = stringdist::stringdist(string1, string2, method = "lcs")
-  tmp$qgram = stringdist::stringdist(string1, string2, method = "qgram")
-  tmp$soundex = stringdist::stringdist(string1, string2, method = "soundex")
-  return(tmp)  
-}
+  function(string1, string2){
+    tmp = expand.grid(string1, string2)
+    tmp$osa = stringdist::stringdist(tmp[,1], tmp[,2], method = "osa")
+    tmp$cosine = stringdist::stringdist(tmp[,1], tmp[,2], method = "cosine")
+    tmp$jaccard = stringdist::stringdist(tmp[,1], tmp[,2], method = "jaccard")
+    tmp$jw = stringdist::stringdist(tmp[,1], tmp[,2], method = "jw")
+    tmp$lcs = stringdist::stringdist(tmp[,1], tmp[,2], method = "lcs")
+    tmp$qgram = stringdist::stringdist(tmp[,1], tmp[,2], method = "qgram")
+    tmp$soundex = stringdist::stringdist(tmp[,1], tmp[,2], method = "soundex")
+    return(tmp)  
+  }

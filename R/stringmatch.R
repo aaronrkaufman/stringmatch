@@ -35,7 +35,7 @@ function(string1, string2,
   feats = get_features(string1, string2)
   
   ## Run the prediction
-  preds = randomForest::predict(m, newdata = feats)
+  preds = predict(m, newdata = feats)
   
   ## Return feature importances too
   if(feature.importances){

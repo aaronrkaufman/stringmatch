@@ -17,32 +17,34 @@ stringmatch <-
            feature.importances = FALSE){
     if(!is.null(trainingset)){
       ## set some warnings for type: make sure the columns are A,B,y
-      if(!c("A", "B", "y") %in% colnames(trainingset)){
+      if(!all(c("A", "B", "y") %in% colnames(trainingset))){
         stop("The columns of trainingset must include 'A', 'B', and 'y'")
       }
       
       ## Calculate stringdist for new training set
       newtrain = get_features(trainingset$A, trainingset$B)
       ## Append the new trainingset to the old one and generate the model
-      train = rbind(train, newtrain)
+      train = rbind(trainingset, newtrain)
       m = ranger::ranger(x = train %>% select(-y),
                        y = factor(train$y),
-                       interaction.depth=2,
-                        importance = "impurity")
+                      probability = TRUE)
       
     } 
     
     ## Calculate stringdist for string1, string2
     feats = get_features(string1, string2)
+    feats = feats %>% filter(!is.na(Var1),!is.na(Var2))
     
     ## Run the prediction
     preds = predict(m, data = feats)
     
+    feats$pred = preds$predictions[,2]
+    
     ## Return feature importances too
     if(feature.importances){
-      out = list(preds$predictions, ranger::importance(m))
+      out = list(feats, ranger::importance(m))
     } else {
-      out = list(preds$predictions)
+      out = list(feats)
     }
     
     ## Return a data set of predictions

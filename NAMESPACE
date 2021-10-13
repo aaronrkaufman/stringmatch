@@ -1,3 +1,6 @@
-export("get_features", "stringmatch")
+export(get_features)
+export(stringmatch)
+export(m)
+export(train)
 importFrom(stringdist, stringdist)
 importFrom(ranger, ranger)

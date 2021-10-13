@@ -1,4 +1,3 @@
 export("get_features", "m", "stringmatch", "train")
 importFrom(stringdist, stringdist)
-importFrom(randomForest, randomForest)
-importFrom(randomForest, predict.randomForest)
+importFrom(ranger, ranger)

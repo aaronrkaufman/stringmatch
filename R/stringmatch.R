@@ -15,6 +15,8 @@ stringmatch <-
   function(string1, string2,
            trainingset = NULL,
            feature.importances = FALSE){
+    data(train)
+    data(m)
     if(!is.null(trainingset)){
       ## set some warnings for type: make sure the columns are A,B,y
       if(!all(c("A", "B", "y") %in% colnames(trainingset))){

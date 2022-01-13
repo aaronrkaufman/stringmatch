@@ -12,7 +12,8 @@ Depends:
     R (>= 3.5.0)
 Imports:
     stringdist,
-    ranger
+    ranger,
+    magrittr
 License: GPL (>= 2)
 RoxygenNote: 7.1.1
 LazyData: true

@@ -25,10 +25,19 @@ stringmatch <-
       
       ## Calculate stringdist for new training set
       newtrain = get_features(trainingset$A, trainingset$B)
+      colnames(newtrain)[1:2] = c("amicus", "bonica")
+      
+      ## Add in the truth vector
+      hash = paste0(trainingset$A, trainingset$B)
+      hash2 = paste0(newtrain$amicus, newtrain$bonica)
+      newtrain$match = 0
+      newtrain$match[hash2 %in% hash] = 1
+      newtrain = newtrain[,colnames(train)]
+      
       ## Append the new trainingset to the old one and generate the model
-      train = rbind(trainingset, newtrain)
-      m = ranger::ranger(x = train %>% select(-y),
-                       y = factor(train$y),
+      train = rbind(train, newtrain)
+      m = ranger::ranger(x = train %>% select(osa:soundex),
+                       y = factor(train$match),
                       probability = TRUE)
       
     } 

@@ -11,13 +11,10 @@
 get_features <-
   function(string1, string2 = NULL) {
     if (is.null(string2)) {
-      tmp = string1 |>
-        length() |>
-        combn(2) |>
-        split(1:2) |>
-        lapply(\(x) string1[x]) |>
-        as.data.frame() |>
-        setNames(c("Var1", "Var2"))
+      tmp = combn(length(string1), 2) # positions for combinations of unordered pairs
+      tmp = split(tmp, 1:2) # split rows of matrix
+      tmp = as.data.frame(lapply(tmp, \(x) string1[x])) # get elements based on positions
+      names(tmp) <- c("Var1", "Var2") # Rename for compatibility with rest of code
     } else {
       tmp = expand.grid(string1, string2)
     }
